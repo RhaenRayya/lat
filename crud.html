@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+
+        body {
+            font-family: sans-serif;
+            margin: 0 50px; 
+        }
+
+        .container {
+            display: flex;
+            gap: 50px;
+        }
+
+        #posts {
+            width: 400px;
+        }
+
+        i {
+            cursor: pointer;
+        }
+
+        #posts div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .options {
+            display: flex;
+            gap: 25px;
+        }
+
+        #msg {
+            color: red;
+        }
+
+        #search {
+            width: 235px;
+        }
+    </style>
+</head>
+<body>
+    <h1>To do list</h1>
+    <div class="conatiner"></div>
+
+    <div class="left">
+        <form name="todoForm">
+            <label for="todolist">Write your list here</label>
+            <br><br>
+            <textarea name="todolist" id="input" cols="30" rows="10"></textarea>
+            <br><br>
+            <div id="msg"></div>
+            <button type="submit" value="">Add</button>
+        </form>
+    </div>
+    <div class="right">
+        <h3>Your list here</h3>
+        <div>
+            <input type="text" name="search" id="search">
+        </div>
+        <div id="posts">
+            <div>
+                <p>To do list 1</p>
+                <span class="options">
+                    <input type="button" value="Done">
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const todolist = [
+            "Belajar JavaScript",
+            "Belajar HTML",
+            "Belajar CSS"
+        ];
+
+        function clearTodolist() {
+            const todolistPosts = document.getElementById("posts");
+            while (todolistPosts.firstChild) {
+                todolistPosts.removeChild(todolistPosts.firstChild);
+            }
+        }
+
+        function removeTodoList(index) {
+            todolist.splice(index, 1);
+            displayTodolist();
+        }
+
+        function addTodoList(index, todo) {
+            const div = document.createElement("div");
+            const plist = document.createElement("p");
+            plist.textContent = todo;
+            div.appendChild(plist);
+
+            const spanLog = document.createElement("span");
+            div.appendChild(spanLog); 
+
+            const logI = document.createElement("input");
+            logI.type = "button";
+            logI.value = "Done";
+            logI.onclick = function () {
+                removeTodoList(index);
+            };
+            spanLog.appendChild(logI);
+
+            const todolistPosts = document.getElementById("posts");
+            todolistPosts.appendChild(div);
+        }
+
+        function displayTodolist() {
+            clearTodolist();
+
+            for (let i = 0; i < todolist.length; i++) {
+                const todo = todolist[i];
+                
+                const searchText = document.getElementById("search").value.toLowerCase();
+
+                if (todo.toLowerCase().includes(searchText)) {
+                    addTodoList(i, todo);
+                }
+            }
+        }
+
+        document.forms['todoForm'].onsubmit = function (event) {
+            event.preventDefault();
+
+            const todo = document.forms['todoForm']['todolist'].value;
+            todolist.push(todo);
+
+            document.forms['todoForm'].reset();
+
+            console.info(todolist);
+            displayTodolist();
+        };
+
+        const searchInput = document.getElementById("search");
+        searchInput.onkeyup = function () {
+            displayTodolist();
+        }
+        searchInput.onkeydown = function () {
+            displayTodolist();
+        }
+
+
+        displayTodolist();
+
+    </script>
+</body>
+</html>
