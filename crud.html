@@ -53,7 +53,7 @@
         <form name="todoForm">
             <label for="todolist">Write your list here</label>
             <br><br>
-            <textarea name="todolist" id="input" cols="30" rows="10"></textarea>
+            <textarea name="todolist" id="input" cols="30" rows="10" placeholder="add new list"></textarea>
             <br><br>
             <div id="msg"></div>
             <button type="submit" value="">Add</button>
@@ -62,7 +62,7 @@
     <div class="right">
         <h3>Your list here</h3>
         <div>
-            <input type="text" name="search" id="search">
+            <input type="text" name="search" id="search" placeholder="Search">
         </div>
         <div id="posts">
             <div>
@@ -137,7 +137,7 @@
 
             document.forms['todoForm'].reset();
 
-            console.info(todolist);
+            // console.info(todolist);
             displayTodolist();
         };
 
