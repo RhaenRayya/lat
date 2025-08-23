@@ -56,7 +56,8 @@
             <textarea name="todolist" id="input" cols="30" rows="10" placeholder="add new list"></textarea>
             <br><br>
             <div id="msg"></div>
-            <button type="submit" value="">Add</button>
+            <button type="submit" value="" id="button-add" onclick="addTodo()">Add</button>
+            <button type="button" value="" id="button-save" onclick="updateTodo()" >Save</button>
         </form>
     </div>
     <div class="right">
@@ -65,12 +66,7 @@
             <input type="text" name="search" id="search" placeholder="Search">
         </div>
         <div id="posts">
-            <div>
-                <p>To do list 1</p>
-                <span class="options">
-                    <input type="button" value="Done">
-                </span>
-            </div>
+            
         </div>
     </div>
 
@@ -79,8 +75,11 @@
         const todolist = [
             "Belajar JavaScript",
             "Belajar HTML",
-            "Belajar CSS"
+            "Belajar CSS",
         ];
+        // let currentEdit;
+        const buttonSave = document.getElementById("button-save");
+
 
         function clearTodolist() {
             const todolistPosts = document.getElementById("posts");
@@ -92,6 +91,12 @@
         function removeTodoList(index) {
             todolist.splice(index, 1);
             displayTodolist();
+        }
+
+        function editTodoList(index) {
+            document.getElementById("button-add").style.visibility  = "hidden"
+            document.getElementById("button-save").style.visibility  = "visible"
+            document.forms['todoForm']['todolist'].value = todolist[index]
         }
 
         function addTodoList(index, todo) {
@@ -109,7 +114,19 @@
             logI.onclick = function () {
                 removeTodoList(index);
             };
+
+             const logI1 = document.createElement("input");
+            logI1.type = "button";
+            logI1.value = "Edit";
+            logI1.style.margin = "10px"
+            logI1.onclick = function () {
+                buttonSave.setAttribute("data-id", index)
+                editTodoList(index);
+            };
+
+            
             spanLog.appendChild(logI);
+            spanLog.appendChild(logI1);
 
             const todolistPosts = document.getElementById("posts");
             todolistPosts.appendChild(div);
@@ -117,6 +134,9 @@
 
         function displayTodolist() {
             clearTodolist();
+            document.getElementById("button-add").style.visibility  = "visible"
+            document.getElementById("button-save").style.visibility  = "hidden"
+
 
             for (let i = 0; i < todolist.length; i++) {
                 const todo = todolist[i];
@@ -129,17 +149,30 @@
             }
         }
 
-        document.forms['todoForm'].onsubmit = function (event) {
-            event.preventDefault();
+        function addTodo () {
+            document.forms['todoForm'].onsubmit = function (event) {
+                event.preventDefault();
 
-            const todo = document.forms['todoForm']['todolist'].value;
-            todolist.push(todo);
+                const todo = document.forms['todoForm']['todolist'].value;
+                todolist.push(todo);
+
+                document.forms['todoForm'].reset();
+
+                displayTodolist();
+            };
+        }
+
+        function updateTodo() {
+            const valueList = document.forms['todoForm']['todolist'].value;            
+            let index  = buttonSave.getAttribute('data-id')
+            todolist[index] = valueList
 
             document.forms['todoForm'].reset();
 
-            // console.info(todolist);
             displayTodolist();
-        };
+
+        }
+
 
         const searchInput = document.getElementById("search");
         searchInput.onkeyup = function () {

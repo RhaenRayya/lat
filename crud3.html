@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        body {
+            font-family: sans-serif;
+            margin: 0 50px;
+        }
+
+        .container {
+            display: flex;
+            gap: 50px;
+        }
+
+        #posts {
+            width: 400px;
+        }
+
+        #nah {
+            cursor: pointer;
+        }
+
+        #posts div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .options {
+            display: flex;
+            gap: 25px;
+        }
+
+        #msg {
+            color: red;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Planner Site</h1>
+    <div class="container">
+
+        <div class="left">
+            <form name="planForm">
+                <label for=""></label>
+                <br><br>
+                <textarea name="plan" id="" cols="30" rows="10"></textarea>
+                <br><br>
+                <div id="msg"></div>
+                <button type="submit">Add</button>
+            </form>
+        </div>
+        <div class="right">
+            <h3>Your plan here</h3>
+            <input type="text" name="search" placeholder="Search" id="hmm">
+            <div id="posts">
+                <div>
+                    <p>Belajar JavaScript</p>
+                    <span class="options">
+                        <input type="button" value="Done" id="nah">
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+
+    const planlist = [];
+
+    function clearDisplaylist() {
+        const planlistPosts = document.getElementById("posts");
+        while (planlistPosts.firstChild) {
+            planlistPosts.removeChild(planlistPosts.firstChild);
+        }
+    }
+
+    function displayPlanlist() {
+        clearDisplaylist();
+
+        for (let i = 0; i < planlist.length; i++) {
+            const plan = planlist[i];
+            
+
+            const div = document.createElement("div");
+            const plist = document.createElement("p");
+            plist.textContent = plan;
+            div.appendChild(plist);
+
+            const spanEl = document.createElement("span");
+            div.appendChild(spanEl);
+
+            const inpEl = document.createElement("input");
+            inpEl.type = "button";
+            inpEl.value = "Done";  
+            spanEl.appendChild(inpEl);
+            
+            const planlistPosts = document.getElementById("posts");
+            planlistPosts.appendChild(div);
+        }
+    }
+
+    document.forms['planForm'].onsubmit = function (event) {
+        event.preventDefault();
+
+        const plan = document.forms['planForm']['plan'].value;
+        planlist.push(plan);
+
+        document.forms['planForm'].reset();
+        displayPlanlist();
+    }
+
+</script>
+</body>
+</html>
